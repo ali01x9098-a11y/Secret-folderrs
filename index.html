@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Zainab! ✨</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Poppins:wght@400;600;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #feada6 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            color: #4a4a4a;
+            padding: 20px;
+        }
+        .card-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 35px 25px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 20px 40px rgba(255, 105, 180, 0.3);
+            text-align: center;
+            position: relative;
+            border: 4px solid #fff;
+            min-height: 540px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        .screen { display: none; width: 100%; animation: fadeIn 0.8s ease-in-out forwards; }
+        .screen.active { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        h1 { font-family: 'Fredoka', sans-serif; color: #ff477e; font-size: 1.8rem; margin-bottom: 12px; line-height: 1.3; }
+        p { font-size: 1.05rem; color: #666; margin-bottom: 22px; line-height: 1.6; }
+        .btn {
+            background: linear-gradient(45deg, #ff477e, #ff70a6);
+            color: white; border: none; padding: 14px 32px; font-size: 1.1rem;
+            font-weight: 600; border-radius: 50px; cursor: pointer;
+            box-shadow: 0 8px 20px rgba(255, 71, 126, 0.4); transition: all 0.3s ease; margin-top: 10px;
+        }
+        .btn:hover { transform: translateY(-3px) scale(1.05); }
+        .gift-box { font-size: 80px; animation: bounce 1.5s infinite alternate ease-in-out; cursor: pointer; margin: 20px 0; }
+        @keyframes bounce { 0% { transform: translateY(0) rotate(-5deg); } 100% { transform: translateY(-20px) rotate(5deg); } }
+        .balloon-area { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin: 20px 0; width: 100%; }
+        .balloon {
+            width: 65px; height: 80px; border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+            display: flex; align-items: center; justify-content: center; font-size: 24px;
+            cursor: pointer; position: relative; animation: float 2s infinite alternate ease-in-out;
+            box-shadow: inset -10px -10px 10px rgba(0,0,0,0.07);
+        }
+        .balloon::after { content: "▲"; position: absolute; bottom: -10px; font-size: 10px; color: inherit; }
+        .balloon:nth-child(1) { background: #ff70a6; animation-delay: 0s; color: #ff70a6;}
+        .balloon:nth-child(2) { background: #70d6ff; animation-delay: 0.3s; color: #70d6ff;}
+        .balloon:nth-child(3) { background: #ffd670; animation-delay: 0.6s; color: #ffd670;}
+        .balloon:nth-child(4) { background: #ff9770; animation-delay: 0.9s; color: #ff9770;}
+        @keyframes float { 0% { transform: translateY(0); } 100% { transform: translateY(-12px); } }
+        .balloon.popped { visibility: hidden; pointer-events: none; }
+        .countdown-num { font-family: 'Fredoka', sans-serif; font-size: 6rem; color: #ff477e; animation: pulse 0.8s infinite alternate; }
+        @keyframes pulse { 0% { transform: scale(1); } 100% { transform: scale(1.15); } }
+        .options-grid { display: flex; flex-direction: column; gap: 12px; width: 100%; margin-top: 15px; }
+        .opt-btn {
+            background: #fff0f5; border: 2px solid #ffb6c1; padding: 12px 20px;
+            border-radius: 15px; color: #ff477e; font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.2s;
+        }
+        .opt-btn:hover { background: #ff477e; color: white; border-color: #ff477e; }
+        .cake-container { position: relative; margin: 20px 0; cursor: pointer; }
+        .cake { font-size: 100px; position: relative; display: inline-block; }
+        .candle-flame { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); font-size: 25px; animation: flicker 0.5s infinite alternate; }
+        @keyframes flicker { 0% { opacity: 0.8; transform: translateX(-50%) scale(0.9); } 100% { opacity: 1; transform: translateX(-50%) scale(1.1); } }
+        .knife { position: absolute; top: 20px; right: -20px; font-size: 45px; transition: all 0.5s ease; opacity: 0; }
+        .cake-container:hover .knife { opacity: 1; transform: translate(-30px, 20px) rotate(-45deg); }
+        .birthday-title { font-family: 'Dancing Script', cursive; font-size: 2.8rem; color: #ff477e; margin-bottom: 12px; }
+        .user-photo {
+            width: 150px; height: 150px; border-radius: 50%; border: 5px solid #ff70a6;
+            object-fit: cover; margin-bottom: 15px; box-shadow: 0 10px 20px rgba(255, 71, 126, 0.3);
+        }
+        .letter { background: #fff9fa; padding: 18px; border-radius: 18px; border: 1px dashed #ff70a6; font-size: 0.95rem; color: #555; line-height: 1.6; }
+    </style>
+</head>
+<body>
+    <div class="card-container">
+        <!-- STEP 1 -->
+        <div id="screen-1" class="screen active">
+            <div class="gift-box">🎁</div>
+            <h1>Suno Zainab! 🙈</h1>
+            <p>Tumhare liye ek super secret aur special surprise tayyar kiya gaya hai... Kya tum excited ho dekhne ke liye?</p>
+            <button class="btn" onclick="nextScreen(2)">Haan, Bohot Excited Hu! ✨</button>
+        </div>
+
+        <!-- STEP 2 -->
+        <div id="screen-2" class="screen">
+            <div style="font-size: 60px; margin-bottom: 10px;">🤫✨</div>
+            <h1>Itni bhi jaldi kya h Zainab? 😉</h1>
+            <p>Thoda sabar rakho! Surprise aise hi thodi na mil jayega... Pehle ek chota sa test pass karna padega!</p>
+            <button class="btn" onclick="nextScreen(3)">Arey Baba Batao Na! 🥺</button>
+        </div>
+
+        <!-- STEP 3: BALLOON POP -->
+        <div id="screen-3" class="screen">
+            <h1>Pop All 4 Balloons! 🎈</h1>
+            <p>Sare balloons ko click karke pop karo Zainab, taaki rasta saaf ho sake!</p>
+            <div class="balloon-area">
+                <div class="balloon" onclick="popBalloon(this)">🎈</div>
+                <div class="balloon" onclick="popBalloon(this)">🎈</div>
+                <div class="balloon" onclick="popBalloon(this)">🎈</div>
+                <div class="balloon" onclick="popBalloon(this)">🎈</div>
+            </div>
+            <p style="font-size: 0.85rem; color: #ff477e;" id="balloon-status">Remaining: 4 balloons</p>
+        </div>
+
+        <!-- STEP 4 -->
+        <div id="screen-4" class="screen">
+            <div style="font-size: 50px;">🚀</div>
+            <h1>Awesome Zainab! Ab Magic Shuru...</h1>
+            <p>10 tak ginti ginte hain aur tumhara surprise dekhte hain!</p>
+            <button class="btn" onclick="startCountdown()">Start Countdown 🔢</button>
+        </div>
+
+        <!-- STEP 5: COUNTDOWN -->
+        <div id="screen-5" class="screen">
+            <p style="font-size: 1.2rem; font-weight: 600; color: #ff70a6;">Hold Your Breath... 💨</p>
+            <div class="countdown-num" id="countdown">10</div>
+        </div>
+
+        <!-- STEP 6: QUESTION 1 -->
+        <div id="screen-6" class="screen">
+            <span style="font-size: 40px;">❓ Question 1/3</span>
+            <h1 style="margin-top: 10px;">Duniya ki sabse cute aur pyaari ladki kaun hai? 🌸</h1>
+            <div class="options-grid">
+                <button class="opt-btn" onclick="nextScreen(7)">Obviously Zainab! 👑</button>
+                <button class="opt-btn" onclick="nextScreen(7)">Mera Koi Competition Hi Nahi Hai 😎</button>
+            </div>
+        </div>
+
+        <!-- STEP 7: QUESTION 2 -->
+        <div id="screen-7" class="screen">
+            <span style="font-size: 40px;">❓ Question 2/3</span>
+            <h1 style="margin-top: 10px;">Aaj ke din sabse zyada party aur treat kaun dene wala hai? 🍕🍰</h1>
+            <div class="options-grid">
+                <button class="opt-btn" onclick="nextScreen(8)">Main Hi Doongi (Zainab Treat Delegi!) 🥳</button>
+                <button class="opt-btn" onclick="nextScreen(8)">Pehle Surprise Toh Poora Dikhao! 😜</button>
+            </div>
+        </div>
+
+        <!-- STEP 8: QUESTION 3 -->
+        <div id="screen-8" class="screen">
+            <span style="font-size: 40px;">❓ Question 3/3</span>
+            <h1 style="margin-top: 10px;">Zainab, kya aap Cake Katne ke liye ready ho? 🎂</h1>
+            <div class="options-grid">
+                <button class="opt-btn" onclick="nextScreen(9)">YESSS! Jaldi Cake Lao! 🎉</button>
+            </div>
+        </div>
+
+        <!-- STEP 9: CAKE CUTTING -->
+        <div id="screen-9" class="screen">
+            <h1>Make a Wish & Cut the Cake, Zainab! 🎂</h1>
+            <p>Cake par click karo blow aur cut karne ke liye!</p>
+            <div class="cake-container" onclick="cutCake()">
+                <div class="candle-flame" id="flame">🔥</div>
+                <div class="cake">🎂</div>
+                <div class="knife">🔪</div>
+            </div>
+            <p style="color: #ff477e; font-weight: 600;" id="cake-instruction">👇 Tap on the cake!</p>
+        </div>
+
+        <!-- STEP 10: FINAL SURPRISE -->
+        <div id="screen-10" class="screen">
+            <img src="Screenshot_20260818-011125.png" alt="Zainab" class="user-photo">
+            <h1 class="birthday-title">Happy Birthday Zainab! 🎉✨</h1>
+            <div class="letter">
+                <p><b>Dear Zainab,</b> ❤️</p>
+                <p>Tumhari life humesha khushiyon se, laughter se aur bohot saare magic se bhari rahe! Aise hi humesha muskuraati raho. Wish you the happiest and most special Birthday ever! 🥳🎂✨</p>
+            </div>
+            <button class="btn" style="margin-top: 20px;" onclick="triggerConfetti()">More Celebrations! 🎊</button>
+        </div>
+    </div>
+
+    <script>
+        let currentScreen = 1;
+        let poppedCount = 0;
+
+        function nextScreen(screenNum) {
+            document.getElementById(`screen-${currentScreen}`).classList.remove('active');
+            currentScreen = screenNum;
+            document.getElementById(`screen-${currentScreen}`).classList.add('active');
+        }
+
+        function popBalloon(element) {
+            if(!element.classList.contains('popped')) {
+                element.classList.add('popped');
+                poppedCount++;
+                document.getElementById('balloon-status').innerText = `Remaining: ${4 - poppedCount} balloons`;
+                triggerConfetti();
+                if(poppedCount === 4) { setTimeout(() => { nextScreen(4); }, 500); }
+            }
+        }
+
+        function startCountdown() {
+            nextScreen(5);
+            let count = 10;
+            const countElem = document.getElementById('countdown');
+            countElem.innerText = count;
+            const timer = setInterval(() => {
+                count--;
+                if(count > 0) { countElem.innerText = count; } 
+                else { clearInterval(timer); nextScreen(6); }
+            }, 900);
+        }
+
+        function cutCake() {
+            const flame = document.getElementById('flame');
+            if (flame) flame.style.display = 'none';
+            document.getElementById('cake-instruction').innerText = "Yaaay! Cake Cut Ho Gaya! 🎉";
+            triggerConfetti();
+            setTimeout(() => { nextScreen(10); triggerConfetti(); }, 1200);
+        }
+
+        function triggerConfetti() {
+            if (typeof confetti === 'function') {
+                confetti({ particleCount: 30, spread: 60, origin: { y: 0.6 } });
+            }
+        }
+    </script>
+</body>
+  </html>
+  
